@@ -15,6 +15,7 @@ export const Container = styled.div<ContainerProps>`
   display: grid;
   grid-template-columns: ${props => `repeat(${props.width}, 1fr)`};
   grid-template-rows: ${props => `repeat(${props.height}, 1fr)`};
+  border: black solid 1px;
 `;
 
 export const Line = styled.div``;

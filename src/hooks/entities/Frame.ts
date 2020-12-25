@@ -5,12 +5,6 @@ export default class Frame {
 
   free: boolean;
 
-  x?: number;
-
-  y?: number;
-
-  idObject?: string;
-
   object?: Snake;
 
   constructor(id: number) {
