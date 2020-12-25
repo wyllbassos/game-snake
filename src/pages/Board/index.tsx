@@ -1,73 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useGame1 } from '../../hooks/game1';
 
-import { Container, Line, Pixel } from './styles';
+import { Container, Frame } from './styles';
 
-interface CreateBoard {
-  initHeight: number;
-  initWidth: number;
-  initPixelSize: number;
-  initColor: string;
-}
+// const getIdPixel = (x: number, y: number): string => `X${x}Y${y}`;
 
-interface Pixel {
-  id: string;
-  free: boolean;
-  x: number;
-  y: number;
-  idObject: string;
-}
-
-interface Snake {
-  o: '';
-}
-
-const getIdPixel = (x: number, y: number): string => `X${x}Y${y}`;
-
-const Board: React.FC<CreateBoard> = ({
-  initHeight,
-  initWidth,
-  initPixelSize,
-  initColor,
-}) => {
-  const [height, setHeight] = useState(initHeight);
-  const [width, setWidth] = useState(initWidth);
-  const [pixelSize, setPixelSize] = useState(initPixelSize);
-  const [color, setColor] = useState(initColor);
-  const [board, setBoard] = useState(document.createElement('div'));
-  const [snakes, setSnakes] = useState<Snake[]>([]);
-  const [positionsOfBoard, setPositionsOfBoard] = useState<Pixel[][]>([[]]);
-
-  useEffect(() => {
-    const newPositionsOfBoard: Pixel[][] = [];
-    const maxY = height - 1;
-    const maxX = width - 1;
-    for (let y = 0; y <= maxY; y += 1) {
-      newPositionsOfBoard.push([]);
-      for (let x = 0; x <= maxX; x += 1) {
-        newPositionsOfBoard[y].push({
-          id: getIdPixel(x, y),
-          free: true,
-          idObject: '',
-          x,
-          y,
-        });
-      }
-    }
-    setPositionsOfBoard(newPositionsOfBoard);
-  }, [height, width]);
+const Board: React.FC = () => {
+  const { frames, pixelSize, color, height, width } = useGame1();
 
   return (
-    <Container>
-      {positionsOfBoard[0].length ? (
-        positionsOfBoard.map((line, l) => {
+    <Container height={height} width={width}>
+      {frames[0] ? (
+        frames.map(frame => {
           return (
-            <Line key={`line${line[0].y}`}>
-              {line.map(pixel => {
-                return (
-                  <Pixel key={pixel.id} props={{ height, width, color }} />
-                );
-              })}
-            </Line>
+            <Frame
+              key={frame.id}
+              props={{
+                size: pixelSize,
+                color: frame.object ? frame.object.color : color,
+              }}
+            />
           );
         })
       ) : (

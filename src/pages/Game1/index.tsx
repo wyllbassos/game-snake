@@ -1,17 +1,37 @@
 import React from 'react';
+import { Commands } from '../../hooks/entities/Snake';
+import { useGame1 } from '../../hooks/game1';
 import Board from '../Board';
 
-const props = {
-  initHeight: 15,
-  initWidth: 15,
-  initPixelSize: 30,
-  initColor: 'black',
+import { Container } from './styles';
+
+const commandsSnake1: Commands = {
+  up: 'w',
+  left: 'a',
+  down: 's',
+  right: 'd',
 };
 
-// import { Container } from './styles';
+const commandsSnake2: Commands = {
+  up: 'ArrowUp',
+  left: 'ArrowLeft',
+  down: 'ArrowDown',
+  right: 'ArrowRight',
+};
 
 const Game1: React.FC = () => {
-  return <Board {...props} />;
+  const { createSnake } = useGame1();
+  return (
+    <Container>
+      <Board />
+      <button
+        onClick={() => createSnake({ color: 'red', commands: commandsSnake1 })}
+        type="button"
+      >
+        Add Snake
+      </button>
+    </Container>
+  );
 };
 
 export default Game1;
