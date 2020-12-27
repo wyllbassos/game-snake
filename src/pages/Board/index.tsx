@@ -10,8 +10,9 @@ const Board: React.FC = () => {
 
   return (
     <Container height={height} width={width}>
-      {frames[0] ? (
+      {frames && frames[0] ? (
         frames.map(frame => {
+          // console.log(frame);
           return (
             <Frame
               key={frame.id}

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Commands } from '../../hooks/entities/Snake';
 import { useGame1 } from '../../hooks/game1';
 import Board from '../Board';
 
@@ -53,16 +52,11 @@ const Game1: React.FC = () => {
       </div>
       <div>
         <span>Color of Board</span>
-        <select
-          onChange={e => setColorBoard(e.target.value)}
+        <input
+          type="color"
           value={colorBoard}
-        >
-          <option value="black">Black</option>
-          <option value="White">White</option>
-          <option value="Blue">Blue</option>
-          <option value="Gray">Gray</option>
-          <option value="Violet">Violet</option>
-        </select>
+          onChange={e => setColorBoard(e.target.value)}
+        />
       </div>
       <button
         onClick={() => {
@@ -75,7 +69,7 @@ const Game1: React.FC = () => {
       <div>
         <span>Color</span>
         <input
-          type="text"
+          type="color"
           value={color}
           onChange={e => setColor(e.target.value)}
         />

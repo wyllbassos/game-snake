@@ -19,8 +19,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100vw;
-    height: 100vh;
 }
 
 body, input, button {
@@ -59,4 +57,7 @@ button:active {
     background-color: rgba(1, 129, 1, 0.616);
 }
 
+#root {
+  padding: 20px 0;
+}
 `;
