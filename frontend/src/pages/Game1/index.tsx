@@ -58,7 +58,7 @@ const Game1: React.FC = () => {
         />
       </div>
       <div>
-        <span>Color of Board</span>
+        <span>Color of Map</span>
         <input
           type="color"
           value={colorBoard}
@@ -74,7 +74,7 @@ const Game1: React.FC = () => {
         }}
         type="button"
       >
-        Add Snake
+        Add Player
       </button>
       <div>
         <span>Color</span>

@@ -89,7 +89,7 @@ const updateGame = async ({ setMap }: UpdateGame): Promise<void> => {
     setTimeout(() => updateGame({ setMap }), 1000);
   } catch (error) {
     console.error(error);
-    setTimeout(() => updateGame({ setMap }), 1000);
+    setTimeout(() => updateGame({ setMap }), 50);
   }
 };
 

@@ -7,7 +7,7 @@ export interface Size {
 
 export class Map {
   id = 0;
-  width = 20;
-  height = 20;
+  width = 10;
+  height = 10;
   sqms: Sqm[] = [];
 }

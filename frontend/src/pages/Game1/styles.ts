@@ -6,6 +6,6 @@ export const Container = styled.div`
 
   div input,
   div select {
-    margin: 15px;
+    margin: 5px;
   }
 `;

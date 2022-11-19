@@ -8,10 +8,12 @@ import { Container, Sqm } from './styles';
 const Board: React.FC = () => {
   const { pixelSize, color, map } = useGame1();
 
-  map.sqms.forEach(sqm => {
-    console.log('sqm', sqm);
-    console.log('content', sqm.content);
-  });
+  // map.sqms.forEach(sqm => {
+  //   console.log('sqm', sqm);
+  //   console.log('content', sqm.content);
+  // });
+
+  console.log(map);
 
   return (
     <Container
