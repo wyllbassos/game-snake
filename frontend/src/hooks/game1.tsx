@@ -81,7 +81,7 @@ const updateGame = async (params: UpdateGame): Promise<void> => {
         api
           .post(`/snakes/${snakeId}`, { command, id: snakeId })
           .then(responseCommand => {
-            console.log(responseCommand);
+            console.log(snakeId, responseCommand);
           });
       }
     });
