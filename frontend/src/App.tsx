@@ -14,7 +14,6 @@ const App: React.FC = () => {
         <AppProvider>
           <Route path="/" exact component={Game1} />
         </AppProvider>
-        <Route path="/snake" exact component={() => <div>Hello snake</div>} />
       </Switch>
       <GlobalStyle />
     </BrowserRouter>

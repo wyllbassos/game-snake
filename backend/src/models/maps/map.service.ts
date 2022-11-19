@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { map } from 'src/contsants/map';
-import { Map } from './entities/map.entity';
+import { Map, Size } from './entities/map.entity';
 import { SqmService } from './sqm.service';
 
 @Injectable()
@@ -10,5 +10,10 @@ export class MapService {
   getMap(): Map {
     map.sqms = this.sqmService.getAllSqm();
     return map;
+  }
+
+  setMapSize({ width, height }: Size): void {
+    map.width = width;
+    map.height = height;
   }
 }

@@ -1,41 +1,31 @@
-import FakeApiGame from './fakes/index';
+import axios from 'axios';
+import { Map, Size } from '../../hooks/game1';
+
+export interface NewPlayer {
+  name: string;
+  color: string;
+}
 
 class Api {
-  private api: FakeApiGame;
+  private api = axios.create({
+    baseURL: 'http://localhost:8080',
+  });
 
-  constructor() {
-    this.api = new FakeApiGame();
-  }
+  getMap = async (): Promise<Map> => {
+    const { data } = await this.api.get<Map>('map');
 
-  get = async (route: string, params = undefined): Promise<any> => {
-    if (route === '/') {
-      return { body: this.api.getGame() };
-    }
-    return undefined;
+    return data;
   };
 
-  post = async (route: string, params: any): Promise<any> => {
-    if (route === '/snakes') {
-      return {
-        body: {
-          snake: this.api.createSnake(params),
-          frames: this.api.frames,
-        },
-      };
-    }
-    if (route === '/frames') {
-      const { height, width } = params;
-      this.api.setFrame(height, width);
-      return { body: this.api.getGame() };
-    }
-    if (route.search('snakes') >= 0) {
-      const { command, id } = params;
-      console.log(this.api.snakes, id, params);
-      if (command === 'down') {
-        this.api.snakes[id].moveDown();
-      }
-    }
-    return undefined;
+  setMapSize = async (size: Size): Promise<void> => {
+    await this.api.patch('map/size', size);
+  };
+
+  addPlayer = async (newPlayer: NewPlayer): Promise<void> => {
+    await this.api.post('player', newPlayer);
   };
 }
-export default new Api();
+
+const api = new Api();
+
+export default api;

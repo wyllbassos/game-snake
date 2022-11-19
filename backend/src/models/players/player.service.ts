@@ -9,18 +9,22 @@ export class PlayerService {
   }
 
   getPlayer(id: number): Player {
-    let player = players.find((p) => p.id === id);
-    if (!player) {
-      player = this.addPlayer(id);
-    }
-
-    return player;
+    return players.find((p) => p.id === id);
   }
 
-  addPlayer(id: number): Player {
-    const player = new Player();
-    player.id = id;
-    players.push(player);
-    return player;
+  addPlayer(newPlayer: Player): Player {
+    let newId = 0;
+
+    if (players.length) {
+      players.sort((pa, pb) => pa.id - pb.id);
+      newId = players[players.length - 1].id + 1;
+    }
+
+    newPlayer.id = newId;
+    newPlayer.posX = 0;
+    newPlayer.posY = 0;
+
+    players.push(newPlayer);
+    return newPlayer;
   }
 }

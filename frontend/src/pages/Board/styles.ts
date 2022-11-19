@@ -3,25 +3,31 @@ import styled from 'styled-components';
 interface ContainerProps {
   width: number;
   height: number;
+  pixelSize: string;
+  color: string;
 }
 interface PixelProps {
-  props: {
-    size: string;
-    color: string;
-  };
+  pixelSize: string;
+  color: string;
+  posX: number;
+  posY: number;
 }
 
 export const Container = styled.div<ContainerProps>`
-  display: grid;
-  grid-template-columns: ${props => `repeat(${props.width}, 1fr)`};
-  grid-template-rows: ${props => `repeat(${props.height}, 1fr)`};
+  position: relative;
+  height: ${({ pixelSize, height }) => `calc(${pixelSize} * ${height})`};
+  width: ${({ pixelSize, width }) => `calc(${pixelSize} * ${width})`};
+  background-color: ${({ color }) => `${color}`};
   border: black solid 1px;
 `;
 
 export const Line = styled.div``;
 
-export const Frame = styled.div<PixelProps>`
-  height: ${({ props }) => `${props.size}`};
-  width: ${({ props }) => `${props.size}`};
-  background-color: ${({ props }) => `${props.color}`};
+export const Sqm = styled.div<PixelProps>`
+  position: absolute;
+  height: ${({ pixelSize }) => `${pixelSize}`};
+  width: ${({ pixelSize }) => `${pixelSize}`};
+  left: ${({ pixelSize, posX }) => `calc(${pixelSize} * ${posX})`};
+  top: ${({ pixelSize, posY }) => `calc(${pixelSize} * ${posY})`};
+  background-color: ${({ color }) => `${color}`};
 `;

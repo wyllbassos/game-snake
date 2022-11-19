@@ -33,17 +33,17 @@ interface InsertSnake {
   commands: Commands;
 }
 
-interface Game1ContextData {
-  height: number;
+export interface Size {
   width: number;
+  height: number;
+}
+
+interface Game1ContextData {
+  map: Map;
   color: string;
-  frames: Frame[];
   pixelSize: string;
-  createSnake(data: InsertSnake): void;
   setColor: Dispatch<SetStateAction<string>>;
   setPixelSize: Dispatch<SetStateAction<string>>;
-  setHeight: Dispatch<SetStateAction<number>>;
-  setWidth: Dispatch<SetStateAction<number>>;
 }
 
 const Game1Context = createContext<Game1ContextData>({} as Game1ContextData);
@@ -56,95 +56,63 @@ interface KeyMap {
 }
 const keyMap: KeyMap[] = [];
 
-// const fakeApiGame = new FakeApiGame();
-
-interface UpdateGame {
-  setHeight: React.Dispatch<React.SetStateAction<number>>;
-  setWidth: React.Dispatch<React.SetStateAction<number>>;
-  setFrames: React.Dispatch<React.SetStateAction<Frame[]>>;
+export interface Player {
+  id: number;
+  name: string;
+  color: string;
+  posX: number;
+  posY: number;
 }
 
-const updateGame = async (params: UpdateGame): Promise<void> => {
-  const { setHeight, setWidth, setFrames } = params;
-  const response = await api.get('/');
-  const { height, width, frames } = response.body;
-  setHeight(height);
-  setWidth(width);
-  // console.log(response);
-  setFrames([...frames]);
-  document.onkeydown = e => {
-    const { key: keyPress } = e;
-    console.log(keyPress);
-    keyMap.map(async mapCommand => {
-      const { command, key, snakeId } = mapCommand;
-      if (key === keyPress) {
-        api
-          .post(`/snakes/${snakeId}`, { command, id: snakeId })
-          .then(responseCommand => {
-            console.log(snakeId, responseCommand);
-          });
-      }
-    });
-  };
-  // updateGame({ setHeight, setWidth, setFrames });
-  setTimeout(() => updateGame({ setHeight, setWidth, setFrames }), 50);
+export interface Sqm {
+  id: number;
+  posX: number;
+  posY: number;
+  content: Player;
+}
+
+export interface Map {
+  id: number;
+  width: number;
+  height: number;
+  sqms: Sqm[];
+}
+interface UpdateGame {
+  setMap: React.Dispatch<React.SetStateAction<Map>>;
+}
+
+const updateGame = async ({ setMap }: UpdateGame): Promise<void> => {
+  try {
+    const map = await api.getMap();
+    setMap(map);
+
+    setTimeout(() => updateGame({ setMap }), 1000);
+  } catch (error) {
+    console.error(error);
+    setTimeout(() => updateGame({ setMap }), 1000);
+  }
 };
 
 export const Game1Provider: React.FC = ({ children }) => {
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [pixelSize, setPixelSize] = useState('40px');
-  const [color, setColor] = useState('black');
-  const [frames, setFrames] = useState<Frame[]>([]);
+  const [map, setMap] = useState<Map>({
+    id: 0,
+    height: 0,
+    width: 0,
+    sqms: [],
+  });
+  const [pixelSize, setPixelSize] = useState('20px');
+  const [color, setColor] = useState('#000000');
 
   useEffect(() => {
-    updateGame({ setHeight, setWidth, setFrames });
+    updateGame({ setMap });
   }, []);
 
-  useEffect(() => {
-    if (height > 0 && width > 0) {
-      api.post('/frames', {
-        height,
-        width,
-      }); /* .then(response => {
-        const { frames: newFrames } = response.body;
-        setFrames([...newFrames]);
-      }); */
-    }
-  }, [height, width]);
-
-  const createSnake = useCallback(
-    ({ color: colorSnake, commands }: InsertSnake) => {
-      // localStorage.removeItem('@GoBarber:token');
-      // localStorage.removeItem('@GoBarber:user');
-      api.post('/snakes', colorSnake).then(response => {
-        const { snake, frames: newFrames } = response.body;
-        if (!snake) {
-          throw new Error('No Have free space in Board');
-        }
-        const { down, left, right, up } = commands;
-        keyMap.push({ key: down, command: 'down', snakeId: snake.id });
-        keyMap.push({ key: left, command: 'left', snakeId: snake.id });
-        keyMap.push({ key: right, command: 'right', snakeId: snake.id });
-        keyMap.push({ key: up, command: 'up', snakeId: snake.id });
-        // console.log(newFrames);
-        // setFrames([...newFrames]);
-      });
-    },
-    [],
-  );
-
   const Game1ContextData: Game1ContextData = {
-    height,
-    width,
+    map,
     color,
-    frames,
     pixelSize,
-    createSnake,
     setColor,
     setPixelSize,
-    setHeight,
-    setWidth,
   };
 
   return (

@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
 import { useGame1 } from '../../hooks/game1';
+import api from '../../services/api';
 import Board from '../Board';
 
 import { Container } from './styles';
 
 const Game1: React.FC = () => {
-  const [color, setColor] = useState('red');
-  const [up, setUp] = useState('w');
-  const [left, setLeft] = useState('a');
-  const [down, setDown] = useState('s');
-  const [right, setRight] = useState('d');
+  const [color, setColor] = useState('#ff0000');
+  // const [up, setUp] = useState('w');
+  // const [left, setLeft] = useState('a');
+  // const [down, setDown] = useState('s');
+  // const [right, setRight] = useState('d');
 
   const {
-    createSnake,
     color: colorBoard,
     pixelSize,
     setPixelSize,
-    height,
-    width,
-    setHeight,
-    setWidth,
     setColor: setColorBoard,
+    map,
   } = useGame1();
 
   return (
@@ -30,16 +27,26 @@ const Game1: React.FC = () => {
         <span>height of Board</span>
         <input
           type="number"
-          value={height}
-          onChange={e => setHeight(Number(e.target.value))}
+          value={map.height}
+          onChange={e => {
+            api.setMapSize({
+              height: Number(e.target.value),
+              width: map.width,
+            });
+          }}
         />
       </div>
       <div>
         <span>width of Board</span>
         <input
           type="number"
-          value={width}
-          onChange={e => setWidth(Number(e.target.value))}
+          value={map.width}
+          onChange={e => {
+            api.setMapSize({
+              height: map.height,
+              width: Number(e.target.value),
+            });
+          }}
         />
       </div>
       <div>
@@ -60,7 +67,10 @@ const Game1: React.FC = () => {
       </div>
       <button
         onClick={() => {
-          createSnake({ color, commands: { down, left, right, up } });
+          api.addPlayer({
+            color,
+            name: `nome_${color}`,
+          });
         }}
         type="button"
       >
@@ -74,7 +84,7 @@ const Game1: React.FC = () => {
           onChange={e => setColor(e.target.value)}
         />
       </div>
-      <div>
+      {/* <div>
         <span>Up</span>
         <input
           type="text"
@@ -117,7 +127,7 @@ const Game1: React.FC = () => {
           }}
           onKeyUp={e => setRight(e.key)}
         />
-      </div>
+      </div> */}
     </Container>
   );
 };

@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { Map } from './entities/map.entity';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import { Map, Size } from './entities/map.entity';
 import { MapService } from './map.service';
 
 @Controller('map')
@@ -9,5 +9,10 @@ export class MapController {
   @Get()
   getMap(): Map {
     return this.mapService.getMap();
+  }
+
+  @Patch('size')
+  setMapSize(@Body() size: Size): void {
+    this.mapService.setMapSize(size);
   }
 }
