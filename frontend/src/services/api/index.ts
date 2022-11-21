@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Map, Size } from '../../hooks/game1';
+import { Map, Player, Size } from '../../hooks/game1';
 
 export interface NewPlayer {
   name: string;
@@ -21,8 +21,8 @@ class Api {
     await this.api.patch('map/size', size);
   };
 
-  addPlayer = async (newPlayer: NewPlayer): Promise<void> => {
-    await this.api.post('player', newPlayer);
+  addPlayer = async (newPlayer: NewPlayer): Promise<Player> => {
+    return (await this.api.post('player', newPlayer)).data;
   };
 }
 

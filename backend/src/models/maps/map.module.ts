@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
-import { MapGateway } from 'src/map.gateway';
+import { PlayerService } from '../players/player.service';
 import { MapController } from './map.controller';
+import { MapGateway } from './map.gateway';
 import { MapService } from './map.service';
 
 @Module({

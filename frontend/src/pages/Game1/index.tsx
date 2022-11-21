@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import { useGame1 } from '../../hooks/game1';
+import { Player, useGame1 } from '../../hooks/game1';
 import api from '../../services/api';
 import Board from '../Board';
 
@@ -14,6 +14,7 @@ const Game1: React.FC = () => {
   // const [left, setLeft] = useState('a');
   // const [down, setDown] = useState('s');
   // const [right, setRight] = useState('d');
+  const [player, setPlayer] = useState<Player>();
 
   const {
     color: colorBoard,
@@ -25,15 +26,29 @@ const Game1: React.FC = () => {
   } = useGame1();
 
   useEffect(() => {
+    socket.on('disconnect', reason => {
+      console.log(socket.disconnected, reason); // true
+      // setTimeout(socket.)
+    });
+
     socket.on('map', a => {
       console.log('map', a);
       setMap(a);
     });
 
+    // api
+    //   .addPlayer({
+    //     color,
+    //     name: `nome_${color}`,
+    //   })
+    //   .then(newPlayer => {
+    //     setPlayer(newPlayer);
+    //   });
+
     return () => {
       socket.off('map');
     };
-  }, [setMap]);
+  }, [setMap, color]);
 
   return (
     <Container>
@@ -82,10 +97,14 @@ const Game1: React.FC = () => {
       </div>
       <button
         onClick={() => {
-          api.addPlayer({
+          socket.emit('addNewPlayer', {
             color,
             name: `nome_${color}`,
           });
+          // api.addPlayer({
+          //   color,
+          //   name: `nome_${color}`,
+          // });
         }}
         type="button"
       >

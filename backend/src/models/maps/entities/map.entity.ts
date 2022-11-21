@@ -1,5 +1,3 @@
-import { MapGateway } from 'src/map.gateway';
-import { Player } from 'src/models/players/entities/player.entity';
 import { Sqm } from './sqm.entity';
 
 export interface Size {

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { players } from 'src/contsants/players';
-import { MapGateway } from 'src/map.gateway';
 import { MapService } from '../maps/map.service';
 import { Player } from './entities/player.entity';
 

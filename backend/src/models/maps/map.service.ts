@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { map } from 'src/contsants/map';
-import { players } from 'src/contsants/players';
-import { MapGateway } from 'src/map.gateway';
 import { Player } from '../players/entities/player.entity';
 import { Map, Size } from './entities/map.entity';
 import { Sqm } from './entities/sqm.entity';
+import { MapGateway } from './map.gateway';
 
 interface Pos {
   posX: number;
@@ -14,6 +13,7 @@ interface Pos {
 @Injectable()
 export class MapService {
   constructor(private readonly mapGateway: MapGateway) {}
+
   getMap(): Map {
     return map;
   }
