@@ -26,7 +26,7 @@ export class MapService {
   }
 
   //=======================================================
-  addContentAtNextSqm(player: Player) {
+  addContentAtNextSqm(player: Player): boolean {
     const sqm = this.findNextSqmFree();
 
     if (sqm) {
@@ -37,11 +37,14 @@ export class MapService {
       player.posY = sqm.posY;
 
       this.mapGateway.sendNewMap(map);
+      return true;
     }
+
+    return false;
   }
 
   findNextSqmFree(): Sqm {
-    for (let posY = 0; posY < map.height - 1; posY++) {
+    for (let posY = 0; posY < map.height; posY++) {
       for (let posX = 0; posX < map.width; posX++) {
         const existsSqm = map.sqms.find(
           (sqm) => sqm.posX === posX && sqm.posY === posY,

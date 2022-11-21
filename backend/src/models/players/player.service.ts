@@ -25,12 +25,10 @@ export class PlayerService {
     }
 
     newPlayer.id = newId;
-    newPlayer.posX = 0;
-    newPlayer.posY = 0;
 
-    players.push(newPlayer);
-
-    this.mapService.addContentAtNextSqm(newPlayer);
+    if (this.mapService.addContentAtNextSqm(newPlayer)) {
+      players.push(newPlayer);
+    }
 
     return newPlayer;
   }
