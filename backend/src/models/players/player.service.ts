@@ -6,10 +6,7 @@ import { Player } from './entities/player.entity';
 
 @Injectable()
 export class PlayerService {
-  constructor(
-    private readonly apGateway: MapGateway,
-    private readonly mapService: MapService,
-  ) {}
+  constructor(private readonly mapService: MapService) {}
 
   getAllPlayers(): Player[] {
     return players;
@@ -33,7 +30,7 @@ export class PlayerService {
 
     players.push(newPlayer);
 
-    this.apGateway.sendNewMap(this.mapService.getMap());
+    this.mapService.addContentAtNextSqm(newPlayer);
 
     return newPlayer;
   }

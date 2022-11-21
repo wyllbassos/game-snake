@@ -15,9 +15,7 @@ export class MapGateway {
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('map')
   sendNewMap(@MessageBody() map: Map): void {
-    console.log('map', map);
     this.server.emit('map', map);
   }
 }
