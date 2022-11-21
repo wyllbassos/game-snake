@@ -1,16 +1,23 @@
-import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import {
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
+import { Server } from 'socket.io';
+import { Map } from './models/maps/entities/map.entity';
 
 // https://github.com/mguay22/nestjs-sockets/blob/master/socket-client/index.html
 // https://www.youtube.com/watch?v=7xpLYk4q0Sg
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class MapGateway {
   @WebSocketServer()
-  server;
+  server: Server;
 
   @SubscribeMessage('map')
-  handleMessage(@MessageBody() message: string): void {
-    console.log(message);
-    this.server.emit('message', message);
+  sendNewMap(@MessageBody() map: Map): void {
+    console.log('map', map);
+    this.server.emit('map', map);
   }
 }

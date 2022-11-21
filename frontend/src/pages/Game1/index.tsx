@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
 import { useGame1 } from '../../hooks/game1';
 import api from '../../services/api';
 import Board from '../Board';
 
 import { Container } from './styles';
+
+const socket = io('http://localhost:8080');
 
 const Game1: React.FC = () => {
   const [color, setColor] = useState('#ff0000');
@@ -18,7 +21,19 @@ const Game1: React.FC = () => {
     setPixelSize,
     setColor: setColorBoard,
     map,
+    setMap,
   } = useGame1();
+
+  useEffect(() => {
+    socket.on('map', a => {
+      console.log('map', a);
+      setMap(a);
+    });
+
+    return () => {
+      socket.off('map');
+    };
+  }, [setMap]);
 
   return (
     <Container>

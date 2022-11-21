@@ -18,7 +18,6 @@ export class PlayerController {
 
   @Post()
   addPlayer(@Body() newPlayer: Player): Player {
-    console.log(newPlayer);
     return this.playerService.addPlayer(newPlayer);
   }
 }

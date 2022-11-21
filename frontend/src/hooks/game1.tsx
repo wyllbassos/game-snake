@@ -2,7 +2,7 @@ import React, {
   createContext,
   Dispatch,
   SetStateAction,
-  useCallback,
+  // useCallback,
   useContext,
   useEffect,
   useState,
@@ -21,6 +21,7 @@ interface Frame {
   free: boolean;
   object?: Snake;
 }
+
 export interface Commands {
   down: string;
   right: string;
@@ -44,6 +45,7 @@ interface Game1ContextData {
   pixelSize: string;
   setColor: Dispatch<SetStateAction<string>>;
   setPixelSize: Dispatch<SetStateAction<string>>;
+  setMap: React.Dispatch<React.SetStateAction<Map>>;
 }
 
 const Game1Context = createContext<Game1ContextData>({} as Game1ContextData);
@@ -54,7 +56,7 @@ interface KeyMap {
   command: string;
   snakeId: string;
 }
-const keyMap: KeyMap[] = [];
+// const keyMap: KeyMap[] = [];
 
 export interface Player {
   id: number;
@@ -84,12 +86,13 @@ interface UpdateGame {
 const updateGame = async ({ setMap }: UpdateGame): Promise<void> => {
   try {
     const map = await api.getMap();
+    console.log(map);
     setMap(map);
 
-    setTimeout(() => updateGame({ setMap }), 1000);
+    // setTimeout(() => updateGame({ setMap }), 50);
   } catch (error) {
     console.error(error);
-    setTimeout(() => updateGame({ setMap }), 50);
+    // setTimeout(() => updateGame({ setMap }), 50);
   }
 };
 
@@ -113,6 +116,7 @@ export const Game1Provider: React.FC = ({ children }) => {
     pixelSize,
     setColor,
     setPixelSize,
+    setMap,
   };
 
   return (

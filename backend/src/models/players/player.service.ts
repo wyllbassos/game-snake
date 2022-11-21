@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { players } from 'src/contsants/players';
+import { MapGateway } from 'src/map.gateway';
+import { MapService } from '../maps/map.service';
 import { Player } from './entities/player.entity';
 
 @Injectable()
 export class PlayerService {
+  constructor(
+    private readonly apGateway: MapGateway,
+    private readonly mapService: MapService,
+  ) {}
+
   getAllPlayers(): Player[] {
     return players;
   }
@@ -25,6 +32,9 @@ export class PlayerService {
     newPlayer.posY = 0;
 
     players.push(newPlayer);
+
+    this.apGateway.sendNewMap(this.mapService.getMap());
+
     return newPlayer;
   }
 }

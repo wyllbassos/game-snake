@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
 import { useGame1 } from '../../hooks/game1';
 
 import { Container, Sqm } from './styles';
@@ -13,7 +14,7 @@ const Board: React.FC = () => {
   //   console.log('content', sqm.content);
   // });
 
-  console.log(map);
+  // console.log(map);
 
   return (
     <Container
@@ -22,9 +23,10 @@ const Board: React.FC = () => {
       pixelSize={pixelSize}
       color={color}
     >
-      {map.sqms.map(({ content }) =>
+      {map.sqms.map(({ id, content }) =>
         content ? (
           <Sqm
+            key={id}
             posX={content.posX}
             posY={content.posY}
             pixelSize={pixelSize}
