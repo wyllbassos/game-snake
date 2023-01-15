@@ -7,8 +7,8 @@ import { PlayerGateway } from './player.gateway';
 import { PlayerService } from './player.service';
 
 @Module({
-  imports: [],
+  imports: [MapModule],
   controllers: [PlayerController],
-  providers: [PlayerService, PlayerGateway, MapService, MapGateway],
+  providers: [PlayerService, PlayerGateway],
 })
 export class PlayerModule {}
