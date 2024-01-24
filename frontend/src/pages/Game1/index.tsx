@@ -6,10 +6,9 @@ import Board from '../Board';
 
 import { Container } from './styles';
 
-const socket = io('http://localhost:8080');
+const socket = io('localhost:8081');
 
 const Game1: React.FC = () => {
-  const [color, setColor] = useState('#ff0000');
   // const [up, setUp] = useState('w');
   // const [left, setLeft] = useState('a');
   // const [down, setDown] = useState('s');
@@ -26,6 +25,13 @@ const Game1: React.FC = () => {
   } = useGame1();
 
   useEffect(() => {
+    socket.on('connect', () => {
+      socket.emit('addNewPlayer', {
+        socketId: socket.id ?? null,
+        name: `nome_novo`,
+      });
+    });
+
     socket.on('disconnect', reason => {
       console.log(socket.disconnected, reason); // true
       // setTimeout(socket.)
@@ -48,7 +54,7 @@ const Game1: React.FC = () => {
     return () => {
       socket.off('map');
     };
-  }, [setMap, color]);
+  }, [setMap]);
 
   return (
     <Container>
@@ -87,20 +93,21 @@ const Game1: React.FC = () => {
           onChange={e => setPixelSize(e.target.value)}
         />
       </div>
-      <div>
+      {/* <div>
         <span>Color of Map</span>
         <input
           type="color"
           value={colorBoard}
           onChange={e => setColorBoard(e.target.value)}
         />
-      </div>
-      <button
+      </div> */}
+      {/* <button
         onClick={() => {
           socket.emit('addNewPlayer', {
             color,
             name: `nome_${color}`,
           });
+          setColor(getNewColor);
           // api.addPlayer({
           //   color,
           //   name: `nome_${color}`,
@@ -109,15 +116,15 @@ const Game1: React.FC = () => {
         type="button"
       >
         Add Player
-      </button>
-      <div>
+      </button> */}
+      {/* <div>
         <span>Color</span>
         <input
           type="color"
           value={color}
           onChange={e => setColor(e.target.value)}
         />
-      </div>
+      </div> */}
       {/* <div>
         <span>Up</span>
         <input

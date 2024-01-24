@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
-import { PlayerService } from '../players/player.service';
+import { Module, forwardRef } from '@nestjs/common';
 import { MapController } from './map.controller';
-import { MapGateway } from './map.gateway';
 import { MapService } from './map.service';
+import { AppGatewayModule } from '../gateway/app.gateway.module';
+import { MapGateway } from './map.gateway';
 
 @Module({
-  imports: [],
+  imports: [forwardRef(() => AppGatewayModule)],
   controllers: [MapController],
   providers: [MapService, MapGateway],
   exports: [MapService],

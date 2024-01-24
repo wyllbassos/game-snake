@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { map } from 'src/contsants/map';
 import { Player } from '../players/entities/player.entity';
 import { Map, Size } from './entities/map.entity';
 import { Sqm } from './entities/sqm.entity';
+import { AppGateway } from '../gateway/app.gateway';
 import { MapGateway } from './map.gateway';
 
 interface Pos {
@@ -12,7 +13,10 @@ interface Pos {
 
 @Injectable()
 export class MapService {
-  constructor(private readonly mapGateway: MapGateway) {}
+  constructor(
+    @Inject(forwardRef(() => MapGateway))
+    private readonly mapGateway: MapGateway,
+  ) {}
 
   getMap(): Map {
     return map;
@@ -31,7 +35,7 @@ export class MapService {
 
     if (sqm) {
       sqm.content = player;
-
+      console.log('Alter SQM:', sqm);
       player.posX = sqm.posX;
 
       player.posY = sqm.posY;
@@ -43,19 +47,18 @@ export class MapService {
     return false;
   }
 
+  removeContent({ posX, posY }) {
+    const sqm = this.findSqm({ posX, posY });
+    sqm.content = null;
+    console.log('Alter SQM:', sqm);
+    this.mapGateway.sendNewMap(map);
+  }
+
   findNextSqmFree(): Sqm {
-    for (let posY = 0; posY < map.height; posY++) {
-      for (let posX = 0; posX < map.width; posX++) {
-        const existsSqm = map.sqms.find(
-          (sqm) => sqm.posX === posX && sqm.posY === posY,
-        );
+    return map.sqms.find((sqm) => !sqm?.content);
+  }
 
-        if (!existsSqm?.content) {
-          return existsSqm;
-        }
-      }
-    }
-
-    return map.sqms[0];
+  findSqm({ posX, posY }): Sqm {
+    return map.sqms.find((sqm) => sqm.posX === posX && sqm.posY === posY);
   }
 }
